@@ -3,33 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Egunkari - Admin Dashboard</title>
+    <title>Admin Dashboard - Egunkari</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .admin-container {
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 140px auto 50px;
             padding: 20px;
         }
         
         .admin-header {
-            text-align: center;
-            margin-bottom: 40px;
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        .admin-stats {
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
         
         .stat-card {
-            background: rgba(26, 26, 46, 0.6);
-            backdrop-filter: blur(10px);
-            border-radius: var(--border-radius);
+            background: rgba(255, 255, 255, 0.05);
             padding: 25px;
+            border-radius: var(--border-radius);
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -49,22 +52,25 @@
             font-size: 0.9rem;
         }
         
-        .admin-controls {
+        .admin-actions {
             display: flex;
             gap: 15px;
-            margin-bottom: 30px;
             flex-wrap: wrap;
+            margin-bottom: 30px;
         }
         
         .admin-btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 12px 25px;
             border-radius: var(--border-radius-sm);
             cursor: pointer;
             transition: var(--transition);
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .admin-btn:hover {
@@ -80,8 +86,15 @@
             background: rgba(255, 255, 255, 0.2);
         }
         
+        .admin-btn.danger {
+            background: var(--secondary);
+        }
+        
+        .admin-btn.danger:hover {
+            background: #ff4d7a;
+        }
+        
         .posts-table {
-            width: 100%;
             background: rgba(26, 26, 46, 0.6);
             backdrop-filter: blur(10px);
             border-radius: var(--border-radius);
@@ -91,8 +104,7 @@
         
         .table-header {
             display: grid;
-            grid-template-columns: 50px 1fr 100px 80px 80px 80px 80px 100px;
-            gap: 15px;
+            grid-template-columns: 100px 1fr 150px 100px 100px 100px 100px 100px;
             padding: 20px;
             background: rgba(255, 255, 255, 0.05);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -101,28 +113,18 @@
         
         .table-row {
             display: grid;
-            grid-template-columns: 50px 1fr 100px 80px 80px 80px 80px 100px;
-            gap: 15px;
+            grid-template-columns: 100px 1fr 150px 100px 100px 100px 100px 100px;
             padding: 20px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            transition: var(--transition);
+            align-items: center;
         }
         
         .table-row:hover {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
         }
         
-        .table-cell {
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-        }
-        
-        .content-preview {
-            max-width: 200px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .table-row:last-child {
+            border-bottom: none;
         }
         
         .action-cell {
@@ -130,27 +132,23 @@
             gap: 8px;
         }
         
-        .action-icon {
-            padding: 6px;
-            border-radius: 4px;
+        .icon-btn {
+            background: none;
+            border: none;
+            color: var(--gray);
             cursor: pointer;
+            padding: 8px;
+            border-radius: var(--border-radius-sm);
             transition: var(--transition);
         }
         
-        .action-icon.delete {
-            color: #ff6b6b;
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
         }
         
-        .action-icon.delete:hover {
-            background: rgba(255, 107, 107, 0.1);
-        }
-        
-        .action-icon.view {
-            color: var(--accent);
-        }
-        
-        .action-icon.view:hover {
-            background: rgba(107, 226, 255, 0.1);
+        .icon-btn.delete:hover {
+            color: var(--secondary);
         }
         
         @media (max-width: 768px) {
@@ -159,11 +157,8 @@
                 gap: 10px;
             }
             
-            .table-cell::before {
-                content: attr(data-label);
-                font-weight: 600;
-                margin-right: 10px;
-                color: var(--gray);
+            .admin-container {
+                margin-top: 120px;
             }
         }
     </style>
@@ -174,54 +169,280 @@
             <div class="logo">
                 <i class="fas fa-cogs"></i> Admin Dashboard
             </div>
-            <a href="/" class="admin-btn secondary">
-                <i class="fas fa-arrow-left"></i> Kembali ke Aplikasi
-            </a>
         </div>
     </header>
 
-    <main class="admin-container">
+    <div class="admin-container">
         <div class="admin-header">
-            <h1>Egunkari Database Admin</h1>
-            <p>Kelola semua postingan dan data aplikasi</p>
+            <h1 style="margin-bottom: 10px;">Egunkari Admin</h1>
+            <p style="color: var(--gray);">Kelola semua postingan dan statistik platform</p>
         </div>
         
-        <div class="admin-stats" id="stats-container">
-            <!-- Stats will be loaded dynamically -->
+        <div class="stats-grid" id="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="total-posts">0</div>
+                <div class="stat-label">Total Postingan</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="total-likes">0</div>
+                <div class="stat-label">Total Likes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="total-comments">0</div>
+                <div class="stat-label">Total Komentar</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="total-shares">0</div>
+                <div class="stat-label">Total Shares</div>
+            </div>
         </div>
         
-        <div class="admin-controls">
-            <button class="admin-btn" onclick="refreshData()">
+        <div class="admin-actions">
+            <button class="admin-btn" onclick="admin.refreshData()">
                 <i class="fas fa-sync-alt"></i> Refresh Data
             </button>
-            <button class="admin-btn secondary" onclick="clearCache()">
+            <button class="admin-btn secondary" onclick="admin.clearCache()">
                 <i class="fas fa-trash"></i> Clear Cache
             </button>
-            <button class="admin-btn secondary" onclick="exportData()">
+            <button class="admin-btn secondary" onclick="admin.exportData()">
                 <i class="fas fa-download"></i> Export Data
             </button>
-            <button class="admin-btn secondary" onclick="showHealth()">
-                <i class="fas fa-heartbeat"></i> System Health
+            <button class="admin-btn danger" onclick="admin.deleteAllPosts()">
+                <i class="fas fa-trash-alt"></i> Delete All Posts
             </button>
         </div>
         
         <div class="posts-table">
             <div class="table-header">
                 <div>ID</div>
-                <div>Konten</div>
+                <div>Content</div>
                 <div>User</div>
                 <div>Likes</div>
                 <div>Comments</div>
                 <div>Shares</div>
                 <div>Views</div>
-                <div>Aksi</div>
+                <div>Actions</div>
             </div>
             <div id="posts-table-body">
-                <!-- Posts will be loaded dynamically -->
+                <!-- Posts will be loaded here -->
             </div>
         </div>
-    </main>
+    </div>
 
-    <script src="admin.js"></script>
+    <footer>
+        <div class="container">
+            <p>Egunkari Admin &copy; 2024</p>
+            <a href="/" class="admin-link">Kembali ke Aplikasi</a>
+        </div>
+    </footer>
+
+    <script>
+        class AdminDashboard {
+            constructor() {
+                this.posts = [];
+                this.init();
+            }
+            
+            async init() {
+                await this.loadPosts();
+                this.setupEventListeners();
+            }
+            
+            setupEventListeners() {
+                // Header scroll effect
+                window.addEventListener('scroll', this.handleScroll.bind(this));
+            }
+            
+            handleScroll() {
+                const header = document.getElementById('main-header');
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > 100) {
+                    header.classList.remove('header-expanded');
+                    header.classList.add('header-collapsed');
+                } else {
+                    header.classList.remove('header-collapsed');
+                    header.classList.add('header-expanded');
+                }
+            }
+            
+            async loadPosts() {
+                try {
+                    const response = await fetch('/api/posts?refresh=true');
+                    if (!response.ok) throw new Error('Failed to fetch posts');
+                    
+                    this.posts = await response.json();
+                    this.renderStats();
+                    this.renderTable();
+                } catch (error) {
+                    console.error('Error loading posts:', error);
+                    this.showError('Gagal memuat data');
+                }
+            }
+            
+            renderStats() {
+                const totalPosts = this.posts.length;
+                const totalLikes = this.posts.reduce((sum, post) => sum + (post.likes || 0), 0);
+                const totalComments = this.posts.reduce((sum, post) => sum + (post.comments || 0), 0);
+                const totalShares = this.posts.reduce((sum, post) => sum + (post.shares || 0), 0);
+                
+                document.getElementById('total-posts').textContent = totalPosts;
+                document.getElementById('total-likes').textContent = totalLikes;
+                document.getElementById('total-comments').textContent = totalComments;
+                document.getElementById('total-shares').textContent = totalShares;
+            }
+            
+            renderTable() {
+                const tableBody = document.getElementById('posts-table-body');
+                
+                if (this.posts.length === 0) {
+                    tableBody.innerHTML = `
+                        <div class="table-row" style="grid-template-columns: 1fr; text-align: center; padding: 40px;">
+                            <div style="color: var(--gray);">
+                                <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                                <p>Belum ada postingan</p>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                tableBody.innerHTML = this.posts.map(post => `
+                    <div class="table-row">
+                        <div style="font-family: monospace; font-size: 0.8rem;">${post.id.slice(-6)}</div>
+                        <div style="max-height: 60px; overflow: hidden;">${this.escapeHtml(post.content?.substring(0, 100) || '')}...</div>
+                        <div>${this.escapeHtml(post.user)}</div>
+                        <div>${post.likes || 0}</div>
+                        <div>${post.comments || 0}</div>
+                        <div>${post.shares || 0}</div>
+                        <div>${post.views || 0}</div>
+                        <div class="action-cell">
+                            <button class="icon-btn delete" onclick="admin.deletePost('${post.id}')" title="Delete Post">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            async refreshData() {
+                await this.loadPosts();
+                this.showSuccess('Data berhasil di-refresh');
+            }
+            
+            async clearCache() {
+                try {
+                    const response = await fetch('/api/clear-cache', { method: 'POST' });
+                    if (response.ok) {
+                        await this.loadPosts();
+                        this.showSuccess('Cache berhasil di-clear');
+                    }
+                } catch (error) {
+                    this.showError('Gagal clear cache');
+                }
+            }
+            
+            async deletePost(postId) {
+                if (!confirm('Yakin ingin menghapus postingan ini?')) return;
+                
+                try {
+                    const response = await fetch(`/api/posts/${postId}`, { method: 'DELETE' });
+                    if (response.ok) {
+                        await this.loadPosts();
+                        this.showSuccess('Postingan berhasil dihapus');
+                    }
+                } catch (error) {
+                    this.showError('Gagal menghapus postingan');
+                }
+            }
+            
+            async deleteAllPosts() {
+                if (!confirm('Yakin ingin menghapus SEMUA postingan? Tindakan ini tidak dapat dibatalkan!')) return;
+                
+                try {
+                    for (const post of this.posts) {
+                        await fetch(`/api/posts/${post.id}`, { method: 'DELETE' });
+                    }
+                    
+                    await this.loadPosts();
+                    this.showSuccess('Semua postingan berhasil dihapus');
+                } catch (error) {
+                    this.showError('Gagal menghapus semua postingan');
+                }
+            }
+            
+            exportData() {
+                const dataStr = JSON.stringify(this.posts, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(dataBlob);
+                link.download = `egunkari-export-${new Date().toISOString().split('T')[0]}.json`;
+                link.click();
+            }
+            
+            showSuccess(message) {
+                this.showNotification(message, 'success');
+            }
+            
+            showError(message) {
+                this.showNotification(message, 'error');
+            }
+            
+            showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: ${type === 'success' ? '#2ed573' : type === 'error' ? '#ff4757' : '#3742fa'};
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                    z-index: 10000;
+                    max-width: 300px;
+                    animation: slideInRight 0.3s ease;
+                `;
+                notification.textContent = message;
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 5000);
+            }
+            
+            escapeHtml(unsafe) {
+                if (!unsafe) return '';
+                return unsafe
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+        }
+        
+        // Initialize admin dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            window.admin = new AdminDashboard();
+        });
+        
+        // Add animation style
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>
