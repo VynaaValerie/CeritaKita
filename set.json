@@ -3,9 +3,5 @@
   "GOOGLE_CLIENT_EMAIL": "xwbygood@studious-nature-470917-r6.iam.gserviceaccount.com",
   "GOOGLE_PRIVATE_KEY_ID": "aecc3e385b21c0bdd72740be02c29abf962528c0",
   "GOOGLE_PROJECT_ID": "studious-nature-470917-r6",
-  "GOOGLE_SHEET_ID": "1yc1ao3kS0IYvr8ow2wMMGUbY6jGAbPS4UaJhwX2drmQ",
-  "DEV": false,
-  "MIN_INTERVAL_MS": 1000,
-  "QUEUE_INTERVAL_MS": 1000,
-  "CACHE_TTL_MS": 30000
+  "GOOGLE_SHEET_ID": "1yc1ao3kS0IYvr8ow2wMMGUbY6jGAbPS4UaJhwX2drmQ"
 }
